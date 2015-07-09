@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompressedLogReceiver", "CompressedLogReceiver\CompressedLogReceiver.csproj", "{14867D0E-2171-429B-88C6-A836AC9C8A88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompressedLog", "CompressedLog\CompressedLog.csproj", "{4DF25058-8337-49C6-81FC-B89B15DDEF17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompressedLogTests", "CompressedLogTests\CompressedLogTests.csproj", "{A483866B-C3DD-41D6-A092-98E880EBE188}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{14867D0E-2171-429B-88C6-A836AC9C8A88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14867D0E-2171-429B-88C6-A836AC9C8A88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14867D0E-2171-429B-88C6-A836AC9C8A88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14867D0E-2171-429B-88C6-A836AC9C8A88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DF25058-8337-49C6-81FC-B89B15DDEF17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DF25058-8337-49C6-81FC-B89B15DDEF17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DF25058-8337-49C6-81FC-B89B15DDEF17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DF25058-8337-49C6-81FC-B89B15DDEF17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A483866B-C3DD-41D6-A092-98E880EBE188}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A483866B-C3DD-41D6-A092-98E880EBE188}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A483866B-C3DD-41D6-A092-98E880EBE188}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A483866B-C3DD-41D6-A092-98E880EBE188}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
