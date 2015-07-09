@@ -48,6 +48,11 @@ namespace CompressedLog
 
         public Qso UncompressQso(byte[] buff, int start)
         {
+            return UncompressQso(buff, ref start);
+        }
+
+        public Qso UncompressQso(byte[] buff, ref int start)
+        {
             if (buff == null)
                 throw new ArgumentNullException("buff", "Compressed data buffer null");
             if (start >= buff.Length)
@@ -81,6 +86,8 @@ namespace CompressedLog
             
             // Byte 5+: callsign, ASCII
             q.Callsign = Encoding.ASCII.GetString(buff, start + 5, callsignLength);
+
+            start += c_HeaderLength + callsignLength;
 
             return q;
         }
