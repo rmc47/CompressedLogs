@@ -43,6 +43,14 @@ namespace CompressedLogReceiver.Controllers
             if (decompressPos != length)
                 return new HttpStatusCodeResult(400, "Length does not match expected length");
 
+            QsoStore store = new QsoStore();
+            foreach (Qso q in submittedQsos)
+            {
+                if (!store.QsoExists(q))
+                {
+                    store.AddQso(q);
+                }
+            }
             return Content("OK");
         }
     }
