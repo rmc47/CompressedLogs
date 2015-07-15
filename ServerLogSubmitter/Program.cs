@@ -23,7 +23,7 @@ namespace ServerLogSubmitter
                 string op = operatorQsos.Key;
                 List<Qso> qs = operatorQsos.ToList();
                 string adif = AdifHandler.ExportContacts(qs);
-                string adifForExport = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "M0VFC CompressedLog", "adifs", op, DateTime.UtcNow.ToString("yyyy-MM-dd-HH-mm-ss"));
+                string adifForExport = Path.Combine("C:\\CompressedLog", "adifs", op, DateTime.UtcNow.ToString("yyyy-MM-dd-HH-mm-ss"));
                 string exportFolder = Path.GetDirectoryName(adifForExport);
                 if (!Directory.Exists(exportFolder))
                     Directory.CreateDirectory(exportFolder);
