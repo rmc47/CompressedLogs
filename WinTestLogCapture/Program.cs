@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -14,24 +15,32 @@ namespace WinTestLogCapture
 {
     class Program
     {
+        private static IPEndPoint s_BroadcastEndpoint;
+        private static IPEndPoint s_SourceEndpoint;
+        private static Socket s_Socket;
+
         public static void Main()
         {
-            QsoStore store = new QsoStore();
-            new System.Threading.Timer(_ => Program.UploadOutstandingQsos(), null, 0, 5 * 60 * 1000);
             QsoStore store = new QsoStore(ConfigurationSettings.AppSettings["DatabasePath"]);
-            Socket sock = new Socket(AddressFamily.InterNetwork,
+            //new System.Threading.Timer(_ => Program.UploadOutstandingQsos(), null, 0, 5 * 60 * 1000);
+
+            s_Socket = new Socket(AddressFamily.InterNetwork,
                             SocketType.Dgram, ProtocolType.Udp);
-            sock.ExclusiveAddressUse = false;
-            sock.EnableBroadcast = true;
-            IPEndPoint iep = new IPEndPoint(IPAddress.Parse(ConfigurationSettings.AppSettings["BroadcastAddress"]), 9871);
-            sock.Bind(iep);
-            EndPoint ep = (EndPoint)iep;
+            s_Socket.ExclusiveAddressUse = false;
+            s_Socket.EnableBroadcast = true;
+
+            s_BroadcastEndpoint = new IPEndPoint(IPAddress.Parse(ConfigurationSettings.AppSettings["BroadcastAddress"]), 9871);
+            s_SourceEndpoint = new IPEndPoint(IPAddress.Parse(ConfigurationSettings.AppSettings["SourceAddress"]), 9871);
+
+            s_Socket.Bind(s_SourceEndpoint);
+
             Console.WriteLine("Ready to receive...");
+            SendGab("Log capture running");
             List<byte[]> qsoBlock = new List<byte[]>();
 
-            while (sock.IsBound)
+            while (s_Socket.IsBound)
             {
-                string rx = getUdpLine(sock, ep);
+                string rx = getUdpLine(s_Socket, s_BroadcastEndpoint);
                 if (rx.Contains("ADDQSO:"))
                 {
                     Console.WriteLine(rx);
@@ -40,8 +49,13 @@ namespace WinTestLogCapture
                         store.AddQso(q);
                 }
             }
-            sock.Close();
+            s_Socket.Close();
             //TODO: Rebind automatically if socket closes
+        }
+
+        private static void SendGab(string gabText)
+        {
+            SendUdpLine(s_Socket, s_BroadcastEndpoint, "GAB: \"LOGCAP\" \"\" \"" + gabText + "\"");
         }
 
         private static void UploadOutstandingQsos()
@@ -91,8 +105,35 @@ namespace WinTestLogCapture
         {
             byte[] data = new byte[1024];
             int recv = sock.ReceiveFrom(data, ref ep);
+
+            byte checksum = 0;
+            for (int i = 0; i < recv - 2; i++)
+                checksum += data[i];
+            checksum |= (byte)0x80;
+
+            if (checksum != data[recv - 2])
+                Debugger.Break();
+
             string stringData = Encoding.ASCII.GetString(data, 0, recv);
             return stringData;
+        }
+
+        public static void SendUdpLine(Socket sock, EndPoint ep, string line)
+        {
+            byte[] data = Encoding.ASCII.GetBytes(line);
+            
+            // Win-Test's slightly crazy mod127 checksum
+            byte checksum = 0;
+            for (int i = 0; i < data.Length; i++)
+                checksum += data[i];
+            checksum |= 0x80;
+
+            byte[] dataWithChecksum = new byte[data.Length + 2];
+            Buffer.BlockCopy(data, 0, dataWithChecksum, 0, data.Length);
+            dataWithChecksum[data.Length] = checksum;
+            dataWithChecksum[data.Length + 1] = 0;
+
+            sock.SendTo(dataWithChecksum, ep);
         }
 
         private static Qso handleQso(string rx)
