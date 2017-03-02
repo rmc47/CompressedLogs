@@ -1,6 +1,7 @@
 ﻿using CompressedLog;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -53,7 +54,8 @@ namespace WinTestLogCapture
                     return;
 
                 QsoCompressor compressor = new QsoCompressor();
-                HttpWebRequest req = HttpWebRequest.CreateHttp("http://51.255.135.163:8080/logs/submit?qsoCount=" + qsos.Count + "&hash=something");
+                string url = ConfigurationSettings.AppSettings["LogUploadUrl"];
+                HttpWebRequest req = HttpWebRequest.CreateHttp(url + "?qsoCount=" + qsos.Count + "&hash=something");
                 req.Method = "POST";
                 using (Stream reqStream = req.GetRequestStream())
                 {
