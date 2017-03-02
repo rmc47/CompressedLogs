@@ -1,6 +1,7 @@
 ﻿using CompressedLog;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -11,6 +12,8 @@ namespace ServerLogSubmitter
 {
     class Program
     {
+        static string s_ClubLogApiKey;
+
         static void Main(string[] args)
         {
             Console.WriteLine("Hello world.");
@@ -61,13 +64,9 @@ namespace ServerLogSubmitter
 
         private static void SubmitAdifToClubLog(string adifPath, string op)
         {
-            string username;
-            string password;
-            switch (op)
-            {
-                default:
-                    return;
-            }
+            string username = ConfigurationSettings.AppSettings["ClubLogUser"];
+            string password = ConfigurationSettings.AppSettings["ClubLogPassword"];
+
             new ClubLogUploader().UploadToClubLog(adifPath, "TF/" + op, username, password, s_ClubLogApiKey);
         }
 
