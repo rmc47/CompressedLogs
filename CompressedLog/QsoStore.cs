@@ -103,7 +103,7 @@ namespace CompressedLog
         {
             SQLiteConnection conn = new SQLiteConnection();
             SQLiteConnectionStringBuilder csb = new SQLiteConnectionStringBuilder();
-            csb.DataSource = Path.Combine("C:\\CompressedLog", "qsodb.sqlite3");
+            csb.DataSource = Path.Combine("C:\\CompressedLogs", "qsodb.sqlite3");
             if (!Directory.Exists(Path.GetDirectoryName(csb.DataSource)))
                 Directory.CreateDirectory(Path.GetDirectoryName(csb.DataSource));
             conn.ConnectionString = csb.ConnectionString;
