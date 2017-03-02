@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -112,9 +114,33 @@ namespace CompressedLog
             csb.DataSource = DatabasePath;
             if (!Directory.Exists(Path.GetDirectoryName(csb.DataSource)))
                 Directory.CreateDirectory(Path.GetDirectoryName(csb.DataSource));
+
+            bool createSchema = false;
+            if (!File.Exists(DatabasePath))
+                createSchema = true;
+
             conn.ConnectionString = csb.ConnectionString;
             conn.Open();
+
+            if (createSchema)
+                CreateSchema(conn);
+
             return conn;
+        }
+
+        private void CreateSchema(SQLiteConnection conn)
+        {
+            string schema;
+            using (Stream schemaStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("CompressedLog.DatabaseSchema.sql"))
+            {
+                using (StreamReader schemaReader = new StreamReader(schemaStream))
+                    schema = schemaReader.ReadToEnd();
+            }
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = schema;
+                cmd.ExecuteNonQuery();
+            }
         }
 
         private void AddStandardParameters(Qso q, SQLiteCommand cmd)
