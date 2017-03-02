@@ -73,7 +73,7 @@ namespace CompressedLogTests
         {
             string adifText = File.ReadAllText(@"D:\dropbox\logs\JW2015\DXPED-HF-ALL_2015_K3A@JW_G6UW.ADI");
             List<Qso> qsos = AdifHandler.ImportAdif(adifText);
-            QsoStore store = new QsoStore();
+            QsoStore store = new QsoStore("C:\\CompressedLogs\\test-qsodb.sqlite");
             QsoCompressor compressor = new QsoCompressor();
             foreach (Qso q in qsos)
             {
@@ -89,7 +89,7 @@ namespace CompressedLogTests
         {
             string adifText = File.ReadAllText(@"c:\users\rob\Documents\win-test\2016-09-CUWS-TF\2016-09-CUWS-TF.ADI");
             List<Qso> qsos = AdifHandler.ImportAdif(adifText);
-            QsoStore store = new QsoStore();
+            QsoStore store = new QsoStore("C:\\CompressedLogs\\test-qsodb.sqlite");
             QsoCompressor compressor = new QsoCompressor();
             foreach (Qso q in qsos)
             {

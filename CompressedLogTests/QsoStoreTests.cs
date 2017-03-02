@@ -23,7 +23,7 @@ namespace CompressedLogTests
                 Operator = "M0VFC",
             };
 
-            var store = new QsoStore();
+            var store = new QsoStore("C:\\CompressedLogs\\test-qsodb.sqlite");
             store.AddQso(source);
         }
 
@@ -39,7 +39,7 @@ namespace CompressedLogTests
                 Operator = "M0VFC",
             };
 
-            var store = new QsoStore();
+            var store = new QsoStore("C:\\CompressedLogs\\test-qsodb.sqlite");
             if (store.QsoExists(source))
                 store.DeleteQso(source);
 

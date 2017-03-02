@@ -1,6 +1,7 @@
 ﻿using CompressedLog;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -43,7 +44,7 @@ namespace CompressedLogReceiver.Controllers
             if (decompressPos != length)
                 return new HttpStatusCodeResult(400, "Length does not match expected length");
 
-            QsoStore store = new QsoStore();
+            QsoStore store = new QsoStore(ConfigurationSettings.AppSettings["DatabasePath"]);
             foreach (Qso q in submittedQsos)
             {
                 if (!store.QsoExists(q))

@@ -10,6 +10,12 @@ namespace CompressedLog
 {
     public sealed class QsoStore
     {
+        public string DatabasePath { get; private set; }
+        public QsoStore(string databasePath)
+        {
+            DatabasePath = databasePath;
+        }
+
         public void AddQso(Qso q)
         {
             using (SQLiteConnection conn = GetConnection())
@@ -103,7 +109,7 @@ namespace CompressedLog
         {
             SQLiteConnection conn = new SQLiteConnection();
             SQLiteConnectionStringBuilder csb = new SQLiteConnectionStringBuilder();
-            csb.DataSource = Path.Combine("C:\\CompressedLogs", "qsodb.sqlite3");
+            csb.DataSource = DatabasePath;
             if (!Directory.Exists(Path.GetDirectoryName(csb.DataSource)))
                 Directory.CreateDirectory(Path.GetDirectoryName(csb.DataSource));
             conn.ConnectionString = csb.ConnectionString;

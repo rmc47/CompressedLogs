@@ -18,6 +18,7 @@ namespace WinTestLogCapture
         {
             QsoStore store = new QsoStore();
             new System.Threading.Timer(_ => Program.UploadOutstandingQsos(), null, 0, 5 * 60 * 1000);
+            QsoStore store = new QsoStore(ConfigurationSettings.AppSettings["DatabasePath"]);
             Socket sock = new Socket(AddressFamily.InterNetwork,
                             SocketType.Dgram, ProtocolType.Udp);
             sock.ExclusiveAddressUse = false;
@@ -48,7 +49,7 @@ namespace WinTestLogCapture
             Console.WriteLine("==== Uploading QSOs ====");
             try
             {
-                QsoStore store = new QsoStore();
+                QsoStore store = new QsoStore(ConfigurationSettings.AppSettings["DatabasePath"]);
                 List<Qso> qsos = store.GetUnprocessedQsos();
                 if (qsos.Count == 0)
                     return;

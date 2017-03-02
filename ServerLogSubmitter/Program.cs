@@ -21,7 +21,7 @@ namespace ServerLogSubmitter
             s_ClubLogApiKey = System.Configuration.ConfigurationSettings.AppSettings["ClubLogApiKey"];
             Console.WriteLine("Got Club Log API key: " + s_ClubLogApiKey);
 
-            QsoStore store = new QsoStore();
+            QsoStore store = new QsoStore(ConfigurationSettings.AppSettings["DatabasePath"]);
             List<Qso> unprocessedQsos = store.GetUnprocessedQsos();
             
             // Split unprocessed QSOs by operator, then spit out to ADIF, push to TQSL and Club Log
