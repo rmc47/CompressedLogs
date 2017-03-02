@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompressedLogTests", "Compr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerLogSubmitter", "ServerLogSubmitter\ServerLogSubmitter.csproj", "{2DC936E2-7245-4D60-93E0-A0070BA54E45}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinTestLogCapture", "WinTestLogCapture\WinTestLogCapture.csproj", "{3212CEA0-CCBF-455E-9C1A-4344E49AEC97}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{2DC936E2-7245-4D60-93E0-A0070BA54E45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DC936E2-7245-4D60-93E0-A0070BA54E45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2DC936E2-7245-4D60-93E0-A0070BA54E45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3212CEA0-CCBF-455E-9C1A-4344E49AEC97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3212CEA0-CCBF-455E-9C1A-4344E49AEC97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3212CEA0-CCBF-455E-9C1A-4344E49AEC97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3212CEA0-CCBF-455E-9C1A-4344E49AEC97}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

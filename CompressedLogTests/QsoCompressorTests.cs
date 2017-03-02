@@ -19,7 +19,7 @@ namespace CompressedLogTests
             Qso source = new Qso
             {
                 Callsign = "JW1ABC",
-                QsoTime = new DateTime (2015, 07, 13, 15, 17, 0),
+                QsoTime = new DateTime (2016, 09, 13, 15, 17, 0),
                 Band = Band.B40m,
                 Mode = Mode.CW,
                 Operator = "M0VFC",

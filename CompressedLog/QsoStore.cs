@@ -63,8 +63,10 @@ namespace CompressedLog
             {
                 using (SQLiteCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "SELECT * FROM qsos WHERE band=@band AND callsign=@callsign AND mode=@mode AND operator=@operator AND qsotime=@qsotime;";
+                    cmd.CommandText = "SELECT * FROM qsos WHERE band=@band AND callsign=@callsign AND mode=@mode AND operator=@operator AND qsotime>@timelower AND qsotime<@timeupper;";
                     AddStandardParameters(q, cmd);
+                    cmd.Parameters.AddWithValue("@timelower", q.QsoTime.AddSeconds(-60));
+                    cmd.Parameters.AddWithValue("@timeupper", q.QsoTime.AddSeconds(60));
                     using (SQLiteDataReader reader = cmd.ExecuteReader())
                     {
                         return reader.Read();

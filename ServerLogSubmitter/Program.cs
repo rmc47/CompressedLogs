@@ -18,8 +18,10 @@ namespace ServerLogSubmitter
             List<Qso> unprocessedQsos = store.GetUnprocessedQsos();
             
             // Split unprocessed QSOs by operator, then spit out to ADIF, push to TQSL and Club Log
-            foreach (var operatorQsos in unprocessedQsos.GroupBy(q => q.Operator))
+            foreach (var operatorQsos in unprocessedQsos.GroupBy(q => q.Operator).OrderBy(q => q.Key))
             {
+                Console.WriteLine("Processing: " + operatorQsos.Key);
+
                 string op = operatorQsos.Key;
                 List<Qso> qs = operatorQsos.ToList();
                 string adif = AdifHandler.ExportContacts(qs);
@@ -38,18 +40,35 @@ namespace ServerLogSubmitter
 
                 // Upload to LoTW
                 // TOOD: pass through location properly, not just guessed from op
+                Console.WriteLine("Uploading to LotW");
                 SubmitAdifToLotw(adifForExport, op);
                 
                 // TODO: submit to Club Log
+                Console.WriteLine("Uploading to Club Log");
+                SubmitAdifToClubLog(adifForExport, op);
 
+                Console.WriteLine("Marking as processed");
                 foreach (Qso q in qs)
                     store.MarkQsoProcessed(q);
+
+                Console.WriteLine("Done!");
+            }
+        }
+
+        private static void SubmitAdifToClubLog(string adifPath, string op)
+        {
+            string username;
+            string password;
+            switch (op)
+            {
+                default:
+                    return;
             }
         }
 
         private static void SubmitAdifToLotw(string adifPath, string op)
         {
-            string tqslOptions = string.Format("-a all -d -l \"{0}\" -q -u \"{1}\"", "JW/" + op, adifPath);
+            string tqslOptions = string.Format("-a all -d -l \"{0}\" -q -u \"{1}\"", "TF/" + op, adifPath);
             ProcessStartInfo psi = new ProcessStartInfo("c:\\Program Files (x86)\\TrustedQSL\\tqsl.exe", tqslOptions);
             Process p = new Process ();
             p.StartInfo = psi;

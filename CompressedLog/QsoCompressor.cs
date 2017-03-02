@@ -8,7 +8,7 @@ namespace CompressedLog
 {
     public class QsoCompressor
     {
-        private static readonly DateTime s_DateTimeEpoch = new DateTime(2015, 07, 01);
+        public static readonly DateTime s_DateTimeEpoch = new DateTime(2016, 09, 01);
         private const int c_HeaderLength = 5;
 
         public byte[] CompressQso(Qso q)
@@ -156,14 +156,14 @@ namespace CompressedLog
         {
             if (string.IsNullOrWhiteSpace(op))
                 return 0;
-            switch (op.Trim().ToLowerInvariant())
+            switch (op.Trim().ToUpperInvariant())
             {
-                case "g3zay": return 1;
-                case "m0blf": return 2;
-                case "m0hsw": return 3;
-                case "m0tjh": return 4;
-                case "m0vfc": return 5;
-                case "m1acb": return 6;
+                case "DK2AB": return 1;
+                case "G3ZAY": return 2;
+                case "M0BLF": return 3;
+                case "M0VFC": return 4;
+                case "M0WUT": return 5;
+                case "M0ZXA": return 6;
                 default: return 0;
             }
         }
@@ -172,12 +172,12 @@ namespace CompressedLog
         {
             switch (opByte)
             {
-                case 1: return "G3ZAY";
-                case 2: return "M0BLF";
-                case 3: return "M0HSW";
-                case 4: return "M0TJH";
-                case 5: return "M0VFC";
-                case 6: return "M1ACB";
+                case 1: return "DK2AB";
+                case 2: return "G3ZAY";
+                case 3: return "M0BLF";
+                case 4: return "M0VFC";
+                case 5: return "M0WUT";
+                case 6: return "M0ZXA";
                 default: return "UNKNOWN";
             }
         }

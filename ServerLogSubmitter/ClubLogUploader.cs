@@ -21,7 +21,7 @@ namespace ServerLogSubmitter
 
             NameValueCollection files = new NameValueCollection ();
             files["file"] = adifPath;
-            string response = sendHttpRequest("https://secure.clublog.org/putlogs.php", uploadParameters, files);
+            string response = sendHttpRequest("http://www.clublog.org/putlogs.php", uploadParameters, files);
         }
 
         private static string sendHttpRequest(string url, NameValueCollection values, NameValueCollection files = null)
