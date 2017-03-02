@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="CompressedLogs.Submitter.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CompressedLog\CompressedLog.csproj">
