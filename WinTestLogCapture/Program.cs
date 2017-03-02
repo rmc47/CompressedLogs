@@ -23,7 +23,7 @@ namespace WinTestLogCapture
                             SocketType.Dgram, ProtocolType.Udp);
             sock.ExclusiveAddressUse = false;
             sock.EnableBroadcast = true;
-            IPEndPoint iep = new IPEndPoint(IPAddress.Parse("192.168.137.1"), 9871);
+            IPEndPoint iep = new IPEndPoint(IPAddress.Parse(ConfigurationSettings.AppSettings["BroadcastAddress"]), 9871);
             sock.Bind(iep);
             EndPoint ep = (EndPoint)iep;
             Console.WriteLine("Ready to receive...");
