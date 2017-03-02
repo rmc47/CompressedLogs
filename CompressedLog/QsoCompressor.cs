@@ -107,6 +107,8 @@ namespace CompressedLog
                 case Band.B12m: return 9;
                 case Band.B10m: return 10;
                 case Band.B6m: return 11;
+                case Band.SatSO50: return 12;
+                case Band.SatFO29: return 13;
                 default: return 0;
             }
         }
@@ -126,6 +128,8 @@ namespace CompressedLog
                 case 9: return Band.B12m;
                 case 10: return Band.B10m;
                 case 11: return Band.B6m;
+                case 12: return Band.SatSO50;
+                case 13: return Band.SatFO29;
                 default: return Band.Unknown;
             }
         }
@@ -158,12 +162,9 @@ namespace CompressedLog
                 return 0;
             switch (op.Trim().ToUpperInvariant())
             {
-                case "DK2AB": return 1;
-                case "G3ZAY": return 2;
-                case "M0BLF": return 3;
-                case "M0VFC": return 4;
-                case "M0WUT": return 5;
-                case "M0ZXA": return 6;
+                case "M0IDA": return 1;
+                case "M0VFC": return 2;
+                case "M1ACB": return 3;
                 default: return 0;
             }
         }
@@ -172,12 +173,9 @@ namespace CompressedLog
         {
             switch (opByte)
             {
-                case 1: return "DK2AB";
-                case 2: return "G3ZAY";
-                case 3: return "M0BLF";
-                case 4: return "M0VFC";
-                case 5: return "M0WUT";
-                case 6: return "M0ZXA";
+                case 1: return "M0IDA";
+                case 2: return "M0VFC";
+                case 3: return "M1ACB";
                 default: return "UNKNOWN";
             }
         }
