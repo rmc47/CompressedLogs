@@ -14,6 +14,10 @@ namespace ServerLogSubmitter
         static void Main(string[] args)
         {
             Console.WriteLine("Hello world.");
+
+            s_ClubLogApiKey = System.Configuration.ConfigurationSettings.AppSettings["ClubLogApiKey"];
+            Console.WriteLine("Got Club Log API key: " + s_ClubLogApiKey);
+
             QsoStore store = new QsoStore();
             List<Qso> unprocessedQsos = store.GetUnprocessedQsos();
             
@@ -64,6 +68,7 @@ namespace ServerLogSubmitter
                 default:
                     return;
             }
+            new ClubLogUploader().UploadToClubLog(adifPath, "TF/" + op, username, password, s_ClubLogApiKey);
         }
 
         private static void SubmitAdifToLotw(string adifPath, string op)
