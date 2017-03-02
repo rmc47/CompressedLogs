@@ -22,7 +22,7 @@ namespace WinTestLogCapture
         public static void Main()
         {
             QsoStore store = new QsoStore(ConfigurationSettings.AppSettings["DatabasePath"]);
-            //new System.Threading.Timer(_ => Program.UploadOutstandingQsos(), null, 0, 5 * 60 * 1000);
+            new System.Threading.Timer(_ => Program.UploadOutstandingQsos(), null, 0, 5 * 60 * 1000);
 
             s_Socket = new Socket(AddressFamily.InterNetwork,
                             SocketType.Dgram, ProtocolType.Udp);
@@ -92,12 +92,14 @@ namespace WinTestLogCapture
                         {
                             store.MarkQsoProcessed(q);
                         }
+                        SendGab("Uploaded " + qsos.Count + " QSOs");
                     }
                 }
             }
             catch (Exception ex)
             {
                 Console.Error.WriteLine("Error uploading: " + ex);
+                SendGab("Error uploading QSOs");
             }
         }
 
