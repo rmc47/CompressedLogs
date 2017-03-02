@@ -67,12 +67,12 @@ namespace ServerLogSubmitter
             string username = ConfigurationSettings.AppSettings["ClubLogUser"];
             string password = ConfigurationSettings.AppSettings["ClubLogPassword"];
 
-            new ClubLogUploader().UploadToClubLog(adifPath, "TF/" + op, username, password, s_ClubLogApiKey);
+            new ClubLogUploader().UploadToClubLog(adifPath, "C6APY", username, password, s_ClubLogApiKey);
         }
 
         private static void SubmitAdifToLotw(string adifPath, string op)
         {
-            string tqslOptions = string.Format("-a all -d -l \"{0}\" -q -u \"{1}\"", "TF/" + op, adifPath);
+            string tqslOptions = string.Format("-a all -d -l \"{0}\" -q -u \"{1}\"", "C6APY", adifPath);
             ProcessStartInfo psi = new ProcessStartInfo("c:\\Program Files (x86)\\TrustedQSL\\tqsl.exe", tqslOptions);
             Process p = new Process ();
             p.StartInfo = psi;
