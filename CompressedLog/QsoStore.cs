@@ -38,7 +38,7 @@ namespace CompressedLog
             {
                 using (SQLiteCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "UPDATE qsos SET processed=1 WHERE band=@band AND callsign=@callsign AND mode=@mode AND operator=@operator AND qsotime=@qsotime;";
+                    cmd.CommandText = "UPDATE qsos SET processed=1 WHERE band=@band AND callsign=@callsign AND mode=@mode AND qsotime=@qsotime;";
                     AddStandardParameters(q, cmd);
                     cmd.ExecuteNonQuery();
                 }
