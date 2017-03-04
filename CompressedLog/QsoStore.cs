@@ -102,7 +102,8 @@ namespace CompressedLog
             q.Band = (Band)Enum.Parse(typeof(Band), dr.GetString(dr.GetOrdinal("band")));
             q.Callsign = dr.GetString(dr.GetOrdinal("callsign"));
             q.Mode = (Mode)Enum.Parse(typeof(Mode), dr.GetString(dr.GetOrdinal("mode")));
-            q.Operator = dr.GetString(dr.GetOrdinal("operator"));
+            if (!dr.IsDBNull(dr.GetOrdinal("operator")))
+                q.Operator = dr.GetString(dr.GetOrdinal("operator"));
             q.QsoTime = dr.GetDateTime(dr.GetOrdinal("qsotime"));
             return q;
         }
