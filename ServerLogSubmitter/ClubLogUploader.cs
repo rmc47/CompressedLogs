@@ -38,6 +38,7 @@ namespace ServerLogSubmitter
             request.Method = "POST";
             request.ContentType = "multipart/form-data; boundary=" + boundary;
             request.KeepAlive = false;
+            request.ProtocolVersion = new Version(1, 0);
             request.Credentials = System.Net.CredentialCache.DefaultCredentials;
             // Get request stream
             Stream requestStream = request.GetRequestStream();
