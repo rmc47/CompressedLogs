@@ -11,7 +11,7 @@ namespace WinTestLogCapture
 {
     internal sealed class LogUploader
     {
-        public static void UploadOutstandingQsos()
+        public void UploadOutstandingQsos()
         {
             Console.WriteLine("==== Uploading QSOs ====");
             try
@@ -31,6 +31,8 @@ namespace WinTestLogCapture
                     HttpWebRequest req = HttpWebRequest.CreateHttp(url + "?qsoCount=" + qsos.Count + "&hash=something");
                     req.Method = "POST";
                     req.KeepAlive = false;
+                    req.Timeout = 15000; // Iridium is sloooow. And so's my server sometimes.
+
                     using (Stream reqStream = req.GetRequestStream())
                     {
                         foreach (Qso q in qsos)
@@ -51,7 +53,7 @@ namespace WinTestLogCapture
                             {
                                 store.MarkQsoProcessed(q);
                             }
-                            //SendGab("Uploaded " + qsos.Count + " QSOs");
+                            Console.WriteLine("Uploaded {0} QSOs", qsos.Count);
                         }
                         else
                         {

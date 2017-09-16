@@ -18,5 +18,10 @@ namespace WinTestLogCapture
         {
             get { return ConfigurationManager.AppSettings["LogUploadUrl"]; }
         }
+
+        public static int UploadInterval
+        {
+            get { return int.Parse(ConfigurationManager.AppSettings["UploadInterval"]); }
+        }
     }
 }
