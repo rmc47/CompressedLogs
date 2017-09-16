@@ -35,7 +35,7 @@ namespace WinTestLogCapture
             s_Socket.Bind(s_SourceEndpoint);
 
             Console.WriteLine("Ready to receive...");
-            SendGab("Log capture running");
+            //SendGab("Log capture running");
             List<byte[]> qsoBlock = new List<byte[]>();
 
             while (s_Socket.IsBound)
@@ -64,35 +64,46 @@ namespace WinTestLogCapture
             try
             {
                 QsoStore store = new QsoStore(ConfigurationSettings.AppSettings["DatabasePath"]);
-                List<Qso> qsos = store.GetUnprocessedQsos();
-                if (qsos.Count == 0)
-                    return;
+                List<Qso> qsos;
+                while (true)
+                {
+                    qsos = store.GetUnprocessedQsos();
+                    if (qsos.Count == 0)
+                        break;
+                    if (qsos.Count > 20)
+                        qsos = qsos.Take(20).ToList();
 
-                QsoCompressor compressor = new QsoCompressor();
-                string url = ConfigurationSettings.AppSettings["LogUploadUrl"];
-                HttpWebRequest req = HttpWebRequest.CreateHttp(url + "?qsoCount=" + qsos.Count + "&hash=something");
-                req.Method = "POST";
-                using (Stream reqStream = req.GetRequestStream())
-                {
-                    foreach (Qso q in qsos)
-                    {
-                        // Hack the QSO into the right epoch
-                        q.QsoTime = new DateTime(QsoCompressor.s_DateTimeEpoch.Year, QsoCompressor.s_DateTimeEpoch.Month, q.QsoTime.Day, q.QsoTime.Hour, q.QsoTime.Minute, q.QsoTime.Second);
-                        byte[] compressedQso = compressor.CompressQso(q);
-                        reqStream.Write(compressedQso, 0, compressedQso.Length);
-                    }
-                }
-                HttpWebResponse response = (HttpWebResponse)req.GetResponse();
-                using (StreamReader responseReader = new StreamReader(response.GetResponseStream()))
-                {
-                    string responseText = responseReader.ReadToEnd();
-                    if (responseText.Contains("OK"))
+                    QsoCompressor compressor = new QsoCompressor();
+                    string url = ConfigurationSettings.AppSettings["LogUploadUrl"];
+                    HttpWebRequest req = HttpWebRequest.CreateHttp(url + "?qsoCount=" + qsos.Count + "&hash=something");
+                    req.Method = "POST";
+                    req.KeepAlive = false;
+                    using (Stream reqStream = req.GetRequestStream())
                     {
                         foreach (Qso q in qsos)
                         {
-                            store.MarkQsoProcessed(q);
+                            // Hack the QSO into the right epoch
+                            q.QsoTime = new DateTime(QsoCompressor.s_DateTimeEpoch.Year, QsoCompressor.s_DateTimeEpoch.Month, q.QsoTime.Day, q.QsoTime.Hour, q.QsoTime.Minute, q.QsoTime.Second);
+                            byte[] compressedQso = compressor.CompressQso(q);
+                            reqStream.Write(compressedQso, 0, compressedQso.Length);
                         }
-                        SendGab("Uploaded " + qsos.Count + " QSOs");
+                    }
+                    HttpWebResponse response = (HttpWebResponse)req.GetResponse();
+                    using (StreamReader responseReader = new StreamReader(response.GetResponseStream()))
+                    {
+                        string responseText = responseReader.ReadToEnd();
+                        if (responseText.Contains("OK"))
+                        {
+                            foreach (Qso q in qsos)
+                            {
+                                store.MarkQsoProcessed(q);
+                            }
+                            SendGab("Uploaded " + qsos.Count + " QSOs");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Error from server: " + responseText);
+                        }
                     }
                 }
             }

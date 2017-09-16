@@ -98,5 +98,37 @@ namespace CompressedLogTests
                     store.AddQso(q);
             }
         }
+
+        [Test]
+        [Explicit]
+        public void ImportC6Log()
+        {
+            string adifText = File.ReadAllText(@"C:\Users\rob\Documents\win-test\DXPED-HF-ALL_2017@C6APY\C6ACP.ADI");
+            List<Qso> qsos = AdifHandler.ImportAdif(adifText);
+            QsoStore store = new QsoStore("C:\\CompressedLogs\\client-qsodb.sqlite");
+            QsoCompressor compressor = new QsoCompressor();
+            foreach (Qso q in qsos)
+            {
+                Qso q2 = compressor.UncompressQso(compressor.CompressQso(q), 0);
+                if (!store.QsoExists(q))
+                    store.AddQso(q);
+            }
+        }
+
+        [Test]
+        [Explicit]
+        public void ImportC6FinalLog()
+        {
+            string adifText = File.ReadAllText(@"D:\dropbox\C6A-2017\2017-03-10-endops-DXPED-HF-ALL_2017_ACB@C6APY.ADI");
+            List<Qso> qsos = AdifHandler.ImportAdif(adifText);
+            QsoStore store = new QsoStore("C:\\CompressedLogs\\client-qsodb.sqlite");
+            QsoCompressor compressor = new QsoCompressor();
+            foreach (Qso q in qsos)
+            {
+                Qso q2 = compressor.UncompressQso(compressor.CompressQso(q), 0);
+                if (!store.QsoExists(q))
+                    store.AddQso(q);
+            }
+        }
     }
 }
