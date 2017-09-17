@@ -18,14 +18,14 @@ namespace ServerLogSubmitter
         {
             Console.WriteLine("Hello world.");
 
-            s_ClubLogApiKey = System.Configuration.ConfigurationSettings.AppSettings["ClubLogApiKey"];
+            s_ClubLogApiKey = ConfigurationManager.AppSettings["ClubLogApiKey"];
             Console.WriteLine("Got Club Log API key: " + s_ClubLogApiKey);
 
-            QsoStore store = new QsoStore(ConfigurationSettings.AppSettings["DatabasePath"]);
+            QsoStore store = new QsoStore(ConfigurationManager.AppSettings["DatabasePath"]);
             List<Qso> unprocessedQsos = store.GetUnprocessedQsos();
             
             // Split unprocessed QSOs by operator, then spit out to ADIF, push to TQSL and Club Log
-            foreach (var operatorQsos in unprocessedQsos.GroupBy(q => "C6APY").OrderBy(q => q.Key))
+            foreach (var operatorQsos in unprocessedQsos.GroupBy(q => "FP/" + q.Operator).OrderBy(q => q.Key))
             {
                 Console.WriteLine("Processing: " + operatorQsos.Key);
 
@@ -64,15 +64,15 @@ namespace ServerLogSubmitter
 
         private static void SubmitAdifToClubLog(string adifPath, string op)
         {
-            string username = ConfigurationSettings.AppSettings["ClubLogUser"];
-            string password = ConfigurationSettings.AppSettings["ClubLogPassword"];
+            string username = ConfigurationManager.AppSettings["CL_User_" + op];
+            string password = ConfigurationManager.AppSettings["CL_Password_" + op];
 
-            new ClubLogUploader().UploadToClubLog(adifPath, "C6APY", username, password, s_ClubLogApiKey);
+            new ClubLogUploader().UploadToClubLog(adifPath, op, username, password, s_ClubLogApiKey);
         }
 
         private static void SubmitAdifToLotw(string adifPath, string op)
         {
-            string tqslOptions = string.Format("-a all -d -l \"{0}\" -q -u \"{1}\"", "C6APY", adifPath);
+            string tqslOptions = string.Format("-a all -d -l \"{0}\" -q -u \"{1}\"", op, adifPath);
             ProcessStartInfo psi = new ProcessStartInfo("c:\\Program Files (x86)\\TrustedQSL\\tqsl.exe", tqslOptions);
             Process p = new Process ();
             p.StartInfo = psi;
