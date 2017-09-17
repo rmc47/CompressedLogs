@@ -38,7 +38,15 @@ namespace WinTestLogCapture
                 }
             }, null, 0, Settings.UploadInterval * 1000);
 
-            Console.ReadLine();
+            Console.WriteLine("Running, x or q followed by enter to exit");
+            while (true)
+            {
+                var input = Console.ReadLine();
+                if (input.StartsWith("x", StringComparison.InvariantCultureIgnoreCase) || input.StartsWith("q", StringComparison.InvariantCultureIgnoreCase))
+                    break;
+                logUploader.UploadOutstandingQsos();
+            }
+
             Console.WriteLine("Closing sockets...");
             interfaceManager.CloseSocketListeners();
             //TODO: Rebind automatically if socket closes
