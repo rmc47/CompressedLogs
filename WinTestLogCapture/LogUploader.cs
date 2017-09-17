@@ -22,16 +22,20 @@ namespace WinTestLogCapture
                 {
                     qsos = store.GetUnprocessedQsos();
                     if (qsos.Count == 0)
+                    {
+                        Console.WriteLine("No outstanding QSOs to upload");
                         break;
+                    }
                     if (qsos.Count > 20)
                         qsos = qsos.Take(20).ToList();
 
+                    Console.WriteLine("Uploading {0} QSOs", qsos.Count);
                     QsoCompressor compressor = new QsoCompressor();
                     string url = Settings.LogUploadUrl;
                     HttpWebRequest req = HttpWebRequest.CreateHttp(url + "?qsoCount=" + qsos.Count + "&hash=something");
                     req.Method = "POST";
                     req.KeepAlive = false;
-                    req.Timeout = 15000; // Iridium is sloooow. And so's my server sometimes.
+                    req.Timeout = 30000; // Iridium is sloooow. And so's my server sometimes.
 
                     using (Stream reqStream = req.GetRequestStream())
                     {
