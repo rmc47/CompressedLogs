@@ -25,7 +25,7 @@ namespace ServerLogSubmitter
             List<Qso> unprocessedQsos = store.GetUnprocessedQsos();
             
             // Split unprocessed QSOs by operator, then spit out to ADIF, push to TQSL and Club Log
-            foreach (var operatorQsos in unprocessedQsos.GroupBy(q => "FP/" + q.Operator).OrderBy(q => q.Key))
+            foreach (var operatorQsos in unprocessedQsos.GroupBy(q => "VK9/" + q.Operator).OrderBy(q => q.Key))
             {
                 Console.WriteLine("Processing: " + operatorQsos.Key);
 
