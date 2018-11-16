@@ -162,8 +162,9 @@ namespace CompressedLog
                 return 0;
             switch (op.Trim().ToUpperInvariant())
             {
-                case "M0VFC": return 1;
-                case "M0VFC/P": return 2;
+                case "M0BLF": return 1;
+                case "M0VFC": return 2;
+                case "M0WUT": return 3;
                 default: return 0;
             }
         }
@@ -172,9 +173,10 @@ namespace CompressedLog
         {
             switch (opByte)
             {
-                case 1: return "M0VFC";
-                case 2: return "M0VFC/P";
-                default: return "UNKNOWN";
+                case 1: return "M0BLF";
+                case 2: return "M0VFC";
+                case 3: return "M0WUT";
+                default: return "VP2MUW";
             }
         }
     }
