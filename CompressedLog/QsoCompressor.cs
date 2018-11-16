@@ -8,7 +8,7 @@ namespace CompressedLog
 {
     public class QsoCompressor
     {
-        public static readonly DateTime s_DateTimeEpoch = new DateTime(2017, 11, 01);
+        public static readonly DateTime s_DateTimeEpoch = new DateTime(2018, 11, 14);
         private const int c_HeaderLength = 5;
 
         public byte[] CompressQso(Qso q)
